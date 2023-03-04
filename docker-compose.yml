@@ -1,2 +1,31 @@
-networks:
-    project_1
+version: "3.7"
+
+services:
+  nginx:
+    restart: always
+    container_name: nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - project1
+    
+  react:
+    container_name: react
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - "./client/:/app"
+      - "/app/node_modules"
+    ports:
+      - "3000:3000"
+    networks:
+      - project1
+
+networks: 
+  project1:
+    driver: bridge
+    
